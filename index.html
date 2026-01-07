@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Harry Potter Chibi Avatar Creator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 15px;
+            border: 2px solid #ffd700;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #e0e0e0;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .avatar-section {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .avatar-section h2 {
+            margin-bottom: 20px;
+            color: #1a1a2e;
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            border: 3px solid #333;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #e8e8ff 0%, #f5f0ff 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls-section {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 650px;
+            overflow-y: auto;
+        }
+
+        .controls-section h2 {
+            margin-bottom: 20px;
+            color: #1a1a2e;
+            font-size: 1.6em;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 10px;
+        }
+
+        .template-section {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .template-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            color: #fff;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .template-btn:hover {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .template-btn.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #1a1a2e;
+            font-size: 1em;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .option-btn {
+            padding: 10px;
+            background: #fff;
+            color: #1a1a2e;
+            border: 2px solid #1a1a2e;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .option-btn.active {
+            background: #ffd700;
+            border-color: #ffd700;
+            color: #1a1a2e;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            background: #fff;
+            color: #1a1a2e;
+            border: 2px solid #1a1a2e;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: #fff;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.5);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: #fff;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
+        }
+
+        .info-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #1a1a2e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .option-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .controls-section::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .controls-section::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .controls-section::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 10px;
+        }
+
+        .controls-section::-webkit-scrollbar-thumb:hover {
+            background: #ffed4e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Harry Potter Chibi Avatar Creator ⚡</h1>
+            <p>Create your magical wizarding world character</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Avatar Display -->
+            <div class="avatar-section">
+                <h2>Your Magical Avatar</h2>
+                <canvas id="avatarCanvas" width="400" height="500"></canvas>
+                <span class="info-badge">✨ Animated & Ready to Download</span>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls-section">
+                <h2>🎭 Character Templates</h2>
+                <div class="template-section">
+                    <div class="template-grid">
+                        <button class="template-btn active" onclick="loadTemplate('harry')">⚡ Harry Potter</button>
+                        <button class="template-btn" onclick="loadTemplate('hermione')">📚 Hermione</button>
+                        <button class="template-btn" onclick="loadTemplate('ron')">🍺 Ron Weasley</button>
+                        <button class="template-btn" onclick="loadTemplate('luna')">🌙 Luna Lovegood</button>
+                        <button class="template-btn" onclick="loadTemplate('draco')">🐍 Draco Malfoy</button>
+                        <button class="template-btn" onclick="loadTemplate('dumbledore')">🧙‍♂️ Dumbledore</button>
+                    </div>
+                </div>
+
+                <h2>🎨 Customize Your Character</h2>
+
+                <div class="control-group">
+                    <label>👤 Gender</label>
+                    <div class="option-grid">
+                        <button class="option-btn active" onclick="setOption('gender', 'male')">Male</button>
+                        <button class="option-btn" onclick="setOption('gender', 'female')">Female</button>
+                        <button class="option-btn" onclick="setOption('gender', 'neutral')">Neutral</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>👤 Face Shape</label>
+                    <div class="option-grid">
+                        <button class="option-btn active" onclick="setOption('faceShape', 'round')">Round</button>
+                        <button class="option-btn" onclick="setOption('faceShape', 'oval')">Oval</button>
+                        <button class="option-btn" onclick="setOption('faceShape', 'square')">Square</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>🎨 Skin Tone</label>
+                    <select onchange="setColor('skinTone', this.value)">
+                        <option value="#fdbcb4">Light</option>
+                        <option value="#f1a688">Peachy</option>
+                        <option value="#e09c78">Tan</option>
+                        <option value="#d08b5b">Medium</option>
+                        <option value="#ae7453">Olive</option>
+                        <option value="#8b6238">Deep</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>👁️ Eye Style</label>
+                    <div class="option-grid">
+                        <button class="option-btn active" onclick="setOption('eyeStyle', 'round')">Round</button>
+                        <button class="option-btn" onclick="setOption('eyeStyle', 'wide')">Wide</button>
+                        <button class="option-btn" onclick="setOption('eyeStyle', 'cute')">Cute</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>👁️ Eye Color</label>
+                    <select onchange="setColor('eyeColor', this.value)">
+                        <option value="#2b4c7e">Blue</option>
+                        <option value="#4a3728">Brown</option>
+                        <option value="#2d5016">Green</option>
+                        <option value="#5a5a5a">Gray</option>
+                        <option value="#8b7355">Hazel</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>💇 Hair Style</label>
+                    <div class="option-grid">
+                        <button class="option-btn active" onclick="setOption('hairStyle', 'messy')">Messy</button>
+                        <button class="option-btn" onclick="setOption('hairStyle', 'wavy')">Wavy</button>
+                        <button class="option-btn" onclick="setOption('hairStyle', 'straight')">Straight</button>
+                        <button class="option-btn" onclick="setOption('hairStyle', 'curly')">Curly</button>
+                        <button class="option-btn" onclick="setOption('hairStyle', 'spiky')">Spiky</button>
+                        <button class="option-btn" onclick="setOption('hairStyle', 'long')">Long</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>💇 Hair Color</label>
+                    <select onchange="setColor('hairColor', this.value)">
+                        <option value="#2c1810">Black</option>
+                        <option value="#5c4033">Dark Brown</option>
+                        <option value="#8b6f47">Brown</option>
+                        <option value="#d4a574">Light Brown</option>
+                        <option value="#ffd700">Blonde</option>
+                        <option value="#e55b3c">Red</option>
+                        <option value="#c0c0c0">Silver/White</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>🏰 Hogwarts House</label>
+                    <div class="option-grid">
+                        <button class="option-btn active" onclick="setOption('house', 'gryffindor')">🦁 Gryffindor</button>
+                        <button class="option-btn" onclick="setOption('house', 'slytherin')">🐍 Slytherin</button>
+                        <button class="option-btn" onclick="setOption('house', 'ravenclaw')">🦅 Ravenclaw</button>
+                        <button class="option-btn" onclick="setOption('house', 'hufflepuff')">🦡 Hufflepuff</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>✨ Accessories (Toggle Multiple)</label>
+                    <div class="option-grid">
+                        <button class="option-btn" onclick="toggleAccessory('glasses')">👓 Glasses</button>
+                        <button class="option-btn" onclick="toggleAccessory('wand')">🪄 Wand</button>
+                        <button class="option-btn" onclick="toggleAccessory('scarf')">🧣 Scarf</button>
+                        <button class="option-btn" onclick="toggleAccessory('badge')">🎖️ Badge</button>
+                        <button class="option-btn" onclick="toggleAccessory('owl')">🦉 Owl</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn download-btn" onclick="downloadAvatar()">📥 Download PNG</button>
+                    <button class="action-btn reset-btn" onclick="resetAvatar()">↻ Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Avatar configuration
+        const config = {
+            gender: 'male',
+            faceShape: 'round',
+            skinTone: '#fdbcb4',
+            eyeStyle: 'round',
+            eyeColor: '#2b4c7e',
+            hairStyle: 'messy',
+            hairColor: '#2c1810',
+            house: 'gryffindor',
+            accessories: new Set(),
+            frame: 0
+        };
+
+        // House color schemes
+        const houses = {
+            gryffindor: { primary: '#740001', secondary: '#d3a625', trim: '#ffd700' },
+            slytherin: { primary: '#1a472a', secondary: '#5d5d5d', trim: '#aaaaaa' },
+            ravenclaw: { primary: '#0e1a40', secondary: '#946b2d', trim: '#b4a7d6' },
+            hufflepuff: { primary: '#ffdb00', secondary: '#000000', trim: '#f0c400' }
+        };
+
+        // Character templates
+        const templates = {
+            harry: {
+                gender: 'male', faceShape: 'round', skinTone: '#fdbcb4', eyeStyle: 'round',
+                eyeColor: '#2d5016', hairStyle: 'messy', hairColor: '#2c1810',
+                house: 'gryffindor', accessories: ['glasses', 'wand']
+            },
+            hermione: {
+                gender: 'female', faceShape: 'oval', skinTone: '#f1a688', eyeStyle: 'wide',
+                eyeColor: '#4a3728', hairStyle: 'curly', hairColor: '#5c4033',
+                house: 'gryffindor', accessories: ['wand']
+            },
+            ron: {
+                gender: 'male', faceShape: 'square', skinTone: '#f1a688', eyeStyle: 'round',
+                eyeColor: '#2b4c7e', hairStyle: 'messy', hairColor: '#e55b3c',
+                house: 'gryffindor', accessories: ['wand']
+            },
+            luna: {
+                gender: 'female', faceShape: 'oval', skinTone: '#fdbcb4', eyeStyle: 'cute',
+                eyeColor: '#5a5a5a', hairStyle: 'long', hairColor: '#ffd700',
+                house: 'ravenclaw', accessories: ['wand', 'owl']
+            },
+            draco: {
+                gender: 'male', faceShape: 'square', skinTone: '#fdbcb4', eyeStyle: 'wide',
+                eyeColor: '#5a5a5a', hairStyle: 'spiky', hairColor: '#d4a574',
+                house: 'slytherin', accessories: ['wand', 'badge']
+            },
+            dumbledore: {
+                gender: 'male', faceShape: 'oval', skinTone: '#e09c78', eyeStyle: 'round',
+                eyeColor: '#2b4c7e', hairStyle: 'long', hairColor: '#c0c0c0',
+                house: 'gryffindor', accessories: ['wand', 'badge']
+            }
+        };
+
+        // Load template
+        function loadTemplate(name) {
+            const template = templates[name];
+            Object.assign(config, template);
+            config.accessories = new Set(template.accessories);
+            
+            // Update UI
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateAllButtons();
+        }
+
+        // Set option
+        function setOption(type, value) {
+            config[type] = value;
+            
+            // Update button states
+            const buttons = document.querySelectorAll(`[onclick*="setOption('${type}'"]`);
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(value) || 
+                    btn.getAttribute('onclick').includes(`'${value}'`)) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Set color
+        function setColor(type, value) {
+            config[type] = value;
+        }
+
+        // Toggle accessory
+        function toggleAccessory(item) {
+            if (config.accessories.has(item)) {
+                config.accessories.delete(item);
+            } else {
+                config.accessories.add(item);
+            }
+            
+            // Update button state
+            const buttons = document.querySelectorAll(`[onclick="toggleAccessory('${item}')"]`);
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', config.accessories.has(item));
+            });
+        }
+
+        // Update all buttons based on current config
+        function updateAllButtons() {
+            // Update option buttons
+            ['gender', 'faceShape', 'eyeStyle', 'hairStyle', 'house'].forEach(type => {
+                const buttons = document.querySelectorAll(`[onclick*="setOption('${type}'"]`);
+                buttons.forEach(btn => {
+                    const onclick = btn.getAttribute('onclick');
+                    const match = onclick.match(/'([^']+)'\)$/);
+                    if (match && match[1] === config[type]) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Update accessory buttons
+            document.querySelectorAll('[onclick*="toggleAccessory"]').forEach(btn => {
+                const match = btn.getAttribute('onclick').match(/'([^']+)'/);
+                if (match) {
+                    btn.classList.toggle('active', config.accessories.has(match[1]));
+                }
+            });
+            
+            // Update select dropdowns
+            document.querySelector('select[onchange*="skinTone"]').value = config.skinTone;
+            document.querySelector('select[onchange*="eyeColor"]').value = config.eyeColor;
+            document.querySelector('select[onchange*="hairColor"]').value = config.hairColor;
+        }
+
+        // Reset avatar
+        function resetAvatar() {
+            loadTemplate('harry');
+            document.querySelector('.template-btn').classList.add('active');
+        }
+
+        // Download avatar
+        function downloadAvatar() {
+            const canvas = document.getElementById('avatarCanvas');
+            const link = document.createElement('a');
+            link.download = 'my-chibi-avatar.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // ========== DRAWING FUNCTIONS ==========
+        
+        function drawAvatar() {
+            const canvas = document.getElementById('avatarCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Set drawing properties
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2 + 20;
+            
+            // Draw background gradient
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            bgGrad.addColorStop(0, '#e8e8ff');
+            bgGrad.addColorStop(1, '#f5f0ff');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw glow aura
+            drawAura(ctx, cx, cy);
+            
+            // Draw body parts in order
+            drawBody(ctx, cx, cy);
+            drawArms(ctx, cx, cy);
+            drawHead(ctx, cx, cy);
+            drawHair(ctx, cx, cy);
+            drawFace(ctx, cx, cy);
+            
+            // Draw accessories
+            if (config.accessories.has('glasses')) drawGlasses(ctx, cx, cy);
+            if (config.accessories.has('scarf')) drawScarf(ctx, cx, cy);
+            if (config.accessories.has('badge')) drawBadge(ctx, cx, cy);
+            if (config.accessories.has('wand')) drawWand(ctx, cx, cy);
+            if (config.accessories.has('owl')) drawOwl(ctx, cx - 140, cy - 50);
+        }
+
+        function drawAura(ctx, x, y) {
+            const pulse = Math.sin(config.frame * 0.05) * 10;
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, 160 + pulse, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        function drawHead(ctx, x, y) {
+            const headY = y - 140;
+            
+            ctx.fillStyle = config.skinTone;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            
+            // Simple round head
+            ctx.beginPath();
+            ctx.arc(x, headY, 60, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawHair(ctx, x, y) {
+            const headY = y - 140;
+            ctx.fillStyle = config.hairColor;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            
+            if (config.hairStyle === 'messy') {
+                // Messy/spiky top
+                ctx.beginPath();
+                ctx.moveTo(x - 58, headY - 10);
+                ctx.quadraticCurveTo(x - 75, headY - 80, x - 25, headY - 100);
+                ctx.quadraticCurveTo(x - 10, headY - 105, x, headY - 102);
+                ctx.quadraticCurveTo(x + 10, headY - 105, x + 25, headY - 100);
+                ctx.quadraticCurveTo(x + 75, headY - 80, x + 58, headY - 10);
+                ctx.lineTo(x + 52, headY + 30);
+                ctx.lineTo(x - 52, headY + 30);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Side bangs
+                ctx.beginPath();
+                ctx.moveTo(x - 50, headY);
+                ctx.quadraticCurveTo(x - 65, headY + 20, x - 45, headY + 35);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(x + 50, headY);
+                ctx.quadraticCurveTo(x + 65, headY + 20, x + 45, headY + 35);
+                ctx.stroke();
+                
+            } else if (config.hairStyle === 'wavy') {
+                ctx.beginPath();
+                ctx.moveTo(x - 58, headY - 15);
+                ctx.quadraticCurveTo(x - 70, headY - 85, x - 20, headY - 95);
+                ctx.quadraticCurveTo(x, headY - 100, x + 20, headY - 95);
+                ctx.quadraticCurveTo(x + 70, headY - 85, x + 58, headY - 15);
+                ctx.lineTo(x + 50, headY + 25);
+                ctx.lineTo(x - 50, headY + 25);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+            } else if (config.hairStyle === 'straight') {
+                ctx.beginPath();
+                ctx.moveTo(x - 58, headY - 15);
+                ctx.lineTo(x - 68, headY + 70);
+                ctx.lineTo(x - 48, headY + 75);
+                ctx.quadraticCurveTo(x, headY - 100, x + 48, headY + 75);
+                ctx.lineTo(x + 68, headY + 70);
+                ctx.lineTo(x + 58, headY - 15);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+            } else if (config.hairStyle === 'curly') {
+                ctx.beginPath();
+                ctx.moveTo(x - 58, headY);
+                ctx.quadraticCurveTo(x - 75, headY - 70, x - 35, headY - 100);
+                ctx.quadraticCurveTo(x - 15, headY - 108, x, headY - 110);
+                ctx.quadraticCurveTo(x + 15, headY - 108, x + 35, headY - 100);
+                ctx.quadraticCurveTo(x + 75, headY - 70, x + 58, headY);
+                ctx.lineTo(x + 48, headY + 45);
+                ctx.lineTo(x - 48, headY + 45);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+            } else if (config.hairStyle === 'spiky') {
+                ctx.beginPath();
+                ctx.moveTo(x - 45, headY - 5);
+                for (let i = 0; i < 7; i++) {
+                    const angle = (i / 7) * Math.PI + Math.PI / 2;
+                    const sx = x + Math.cos(angle) * 75;
+                    const sy = headY - 92 + Math.sin(angle) * 75;
+                    ctx.quadraticCurveTo(sx, sy, x + (i - 3.5) * 15, headY - 5);
+                }
+                ctx.lineTo(x + 50, headY + 40);
+                ctx.lineTo(x - 50, headY + 40);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+            } else if (config.hairStyle === 'long') {
+                ctx.beginPath();
+                ctx.moveTo(x - 58, headY - 20);
+                ctx.lineTo(x - 70, headY + 80);
+                ctx.lineTo(x - 48, headY + 85);
+                ctx.quadraticCurveTo(x, headY - 105, x + 48, headY + 85);
+                ctx.lineTo(x + 70, headY + 80);
+                ctx.lineTo(x + 58, headY - 20);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+
+        function drawFace(ctx, x, y) {
+            const headY = y - 140;
+            
+            // Draw eyes
+            drawEyes(ctx, x, headY);
+            
+            // Nose
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+            ctx.beginPath();
+            ctx.arc(x, headY + 18, 3, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Mouth
+            ctx.strokeStyle = '#d4567a';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(x, headY + 38, 15, 0.1, Math.PI - 0.1);
+            ctx.stroke();
+            
+            // Blush
+            ctx.fillStyle = 'rgba(255, 150, 170, 0.5)';
+            ctx.beginPath();
+            ctx.ellipse(x - 42, headY + 18, 14, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(x + 42, headY + 18, 14, 10, 0, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawEyes(ctx, x, y) {
+            const blink = Math.sin(config.frame * 0.1);
+            let eyeHeight = 22;
+            
+            if (blink > 0.7) {
+                eyeHeight = 22 * (1 - (blink - 0.7) / 0.3);
+            }
+            
+            ctx.fillStyle = '#fff';
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            
+            // Left eye
+            ctx.beginPath();
+            ctx.ellipse(x - 24, y - 8, 17, eyeHeight, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Right eye
+            ctx.beginPath();
+            ctx.ellipse(x + 24, y - 8, 17, eyeHeight, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Pupils
+            if (eyeHeight > 5) {
+                ctx.fillStyle = config.eyeColor;
+                ctx.beginPath();
+                ctx.arc(x - 24, y - 5, 9, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x + 24, y - 5, 9, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Highlights
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(x - 19, y - 12, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x + 29, y - 12, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Eyebrows
+            ctx.strokeStyle = config.hairColor;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x - 38, y - 30);
+            ctx.quadraticCurveTo(x - 24, y - 35, x - 12, y - 28);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x + 12, y - 28);
+            ctx.quadraticCurveTo(x + 24, y - 35, x + 38, y - 30);
+            ctx.stroke();
+        }
+
+        function drawBody(ctx, x, y) {
+            const houseColors = houses[config.house];
+            
+            // Robe
+            ctx.fillStyle = houseColors.primary;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x - 75, y - 60);
+            ctx.lineTo(x - 92, y + 140);
+            ctx.lineTo(x + 92, y + 140);
+            ctx.lineTo(x + 75, y - 60);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Trim
+            ctx.fillStyle = houseColors.secondary;
+            ctx.fillRect(x - 75, y - 25, 150, 16);
+            ctx.strokeRect(x - 75, y - 25, 150, 16);
+            
+            // Buttons
+            ctx.fillStyle = houseColors.trim;
+            for (let i = 0; i < 5; i++) {
+                ctx.beginPath();
+                ctx.arc(x, y + 20 + i * 24, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+
+        function drawArms(ctx, x, y) {
+            ctx.fillStyle = config.skinTone;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            
+            // Left arm
+            ctx.beginPath();
+            ctx.ellipse(x - 78, y - 20, 14, 52, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Right arm
+            ctx.beginPath();
+            ctx.ellipse(x + 78, y - 20, 14, 52, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Hands
+            ctx.beginPath();
+            ctx.arc(x - 80, y + 42, 13, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(x + 80, y + 42, 13, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawGlasses(ctx, x, y) {
+            const headY = y - 140;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3.5;
+            ctx.fillStyle = 'rgba(200, 220, 255, 0.15)';
+            
+            // Left lens
+            ctx.beginPath();
+            ctx.arc(x - 23, y - 8, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Right lens
+            ctx.beginPath();
+            ctx.arc(x + 23, y - 8, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Bridge
+            ctx.beginPath();
+            ctx.moveTo(x - 3, y - 8);
+            ctx.lineTo(x + 3, y - 8);
+            ctx.stroke();
+        }
+
+        function drawWand(ctx, x, y) {
+            const glow = Math.sin(config.frame * 0.08);
+            
+            // Wand shaft
+            ctx.strokeStyle = '#8b6f47';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(x + 68, y + 5);
+            ctx.quadraticCurveTo(x + 82, y - 45, x + 92, y - 100);
+            ctx.stroke();
+            
+            // Glow
+            ctx.fillStyle = `rgba(255, 215, 0, ${0.4 + glow * 0.2})`;
+            ctx.beginPath();
+            ctx.arc(x + 92, y - 100, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Tip
+            ctx.fillStyle = '#ffed4e';
+            ctx.beginPath();
+            ctx.arc(x + 92, y - 100, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Sparkles
+            ctx.fillStyle = 'rgba(255, 215, 0, 0.8)';
+            for (let i = 0; i < 4; i++) {
+                const angle = (config.frame * 0.05) + (i / 4) * Math.PI * 2;
+                const sparkX = x + 92 + Math.cos(angle) * 20;
+                const sparkY = y - 100 + Math.sin(angle) * 20;
+                ctx.beginPath();
+                ctx.arc(sparkX, sparkY, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawScarf(ctx, x, y) {
+            const sway = Math.sin(config.frame * 0.06) * 12;
+            const houseColors = houses[config.house];
+            
+            ctx.fillStyle = houseColors.secondary;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            
+            ctx.beginPath();
+            ctx.moveTo(x - 38, y - 115);
+            ctx.quadraticCurveTo(x - 68 + sway, y - 65, x - 62, y + 20);
+            ctx.quadraticCurveTo(x - 35, y + 38, x - 28, y - 110);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawBadge(ctx, x, y) {
+            const houseColors = houses[config.house];
+            ctx.fillStyle = houseColors.trim;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            
+            // Shield
+            ctx.beginPath();
+            ctx.moveTo(x + 72, y - 90);
+            ctx.lineTo(x + 92, y - 80);
+            ctx.lineTo(x + 92, y - 50);
+            ctx.quadraticCurveTo(x + 72, y - 35, x + 52, y - 50);
+            ctx.lineTo(x + 52, y - 80);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Letter
+            ctx.fillStyle = houseColors.primary;
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('H', x + 72, y - 65);
+        }
+
+        function drawOwl(ctx, x, y) {
+            const wingFlap = Math.sin(config.frame * 0.2) * 4;
+            
+            ctx.fillStyle = '#8b6f47';
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2.5;
+            
+            // Body
+            ctx.beginPath();
+            ctx.ellipse(x, y + 8, 17, 26, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Head
+            ctx.beginPath();
+            ctx.arc(x, y - 22, 16, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Ear tufts
+            ctx.beginPath();
+            ctx.moveTo(x - 13, y - 36);
+            ctx.quadraticCurveTo(x - 16, y - 48, x - 11, y - 40);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(x + 13, y - 36);
+            ctx.quadraticCurveTo(x + 16, y - 48, x + 11, y - 40);
+            ctx.stroke();
+            
+            // Eyes
+            ctx.fillStyle = '#ffd700';
+            ctx.beginPath();
+            ctx.arc(x - 6, y - 22, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(x + 6, y - 22, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Pupils
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(x - 6, y - 22, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(x + 6, y - 22, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Beak
+            ctx.fillStyle = '#d4a574';
+            ctx.beginPath();
+            ctx.moveTo(x - 2, y - 16);
+            ctx.lineTo(x + 2, y - 16);
+            ctx.lineTo(x, y - 12);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Wings
+            ctx.strokeStyle = '#704020';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x - 17, y + 2);
+            ctx.quadraticCurveTo(x - 30 - wingFlap, y - 3, x - 22, y + 18);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(x + 17, y + 2);
+            ctx.quadraticCurveTo(x + 30 + wingFlap, y - 3, x + 22, y + 18);
+            ctx.stroke();
+        }
+
+        // Animation loop
+        function animate() {
+            config.frame++;
+            drawAvatar();
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>
